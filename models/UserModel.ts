@@ -1,0 +1,10 @@
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+    name: { type: String, required: [true, '* Required field']},
+    email: { type: String, required: [true, '* Required field']},
+    password: { type: String, required: [true, '* Required field']},
+});
+
+export const UserModel = mongoose.models.usuers || mongoose.model('users', UserSchema);
