@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Login } from '../../types/Login';
-import { User } from '../../types/User';
 import { LoginResponse } from '../../types/LoginResponse';
 import { DefaultResponseMessage } from '../../types/DefaultResponseMessage';
 import { UserModel } from '../../models/UserModel';
