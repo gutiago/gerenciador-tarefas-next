@@ -7,4 +7,4 @@ const UserSchema = new Schema({
     password: { type: String, required: [true, '* Required field']},
 });
 
-export const UserModel = mongoose.models.usuers || mongoose.model('users', UserSchema);
+export const UserModel = mongoose.models.users || mongoose.model('users', UserSchema);

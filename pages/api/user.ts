@@ -18,7 +18,6 @@ const handler = async (req : NextApiRequest, res : NextApiResponse<DefaultRespon
             return;
         }
 
-        
         if (await isExistingUser(user, res)) {
             return;
         }
