@@ -31,8 +31,8 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
 
       if (result && result.data) {
         localStorage.setItem('accessToken', result.data.token);
-        localStorage.setItem('userName', result.data.userName);
-        localStorage.setItem('userEmail', result.data.userEmail);
+        localStorage.setItem('userName', result.data.name);
+        localStorage.setItem('userEmail', result.data.email);
         setAccessToken(result.data.token);
       } else {
         setMsgError('Error parsing data, please try again');

@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { AccessTokenProps } from '../types/AccessTokenProps';
+import Header from './Header';
 
 const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
  
@@ -11,10 +12,7 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
     }
 
     return (
-        <div className="container-login">
-          <h1>Home</h1>
-          <button value="Sair" onClick={ exit }/>
-        </div>
+        <Header exit={ exit }/>
     )
 }
 
