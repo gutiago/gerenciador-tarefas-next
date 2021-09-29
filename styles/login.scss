@@ -7,6 +7,17 @@
         margin: auto;
         margin-bottom: 30px;
     }
+    
+    p {
+        text-align: center;
+        color: $errorColor;
+        font-weight: bold;
+        max-width: 300px;
+    }
+
+    .disabled {
+        background-color: $mediumGreyColor;
+    }
 
     .input {
         display: flex;
@@ -74,6 +85,10 @@
         .logo {
             width: 520px;
             margin: 0px;
+        }
+
+        p {
+            max-width: none;
         }
 
         form {
