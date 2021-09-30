@@ -15,10 +15,6 @@
         max-width: 300px;
     }
 
-    .disabled {
-        background-color: $mediumGreyColor;
-    }
-
     .input {
         display: flex;
         flex-direction: row;
@@ -72,6 +68,10 @@
         border-radius: 12px;
         font-size: 16px;
         margin-top: 30px;
+
+        &:disabled {
+            background-color: $darkGrayColor;
+        }
     }
 
     @media screen and (min-width: 992px) {
