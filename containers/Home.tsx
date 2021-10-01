@@ -13,28 +13,30 @@ import List from './List';
 const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
 
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [periodFrom, setPeriodFrom] = useState('');
+    const [periodFrom, setPeriodoFrom] = useState('');
     const [periodTo, setPeriodTo] = useState('');
     const [status, setStatus] = useState(0);
+
     const [showModal, setShowModal] = useState(false);
-    const [msgError, setMsgError] = useState('');
+    const [isLoading, setLoading] = useState(false);
+    const [msgErro, setMsgErro] = useState('');
     const [name, setName] = useState('');
     const [finishPrevisionDate, setFinishPrevisionDate] = useState('');
-    const [isLoading, setLoading] = useState(false);
 
     const getFilteredList = async () => {
         try {
-            let filters = '?status=' + status;
+
+            let filtros = '?status=' + status;
 
             if (periodFrom) {
-                filters += '&finishPrevisionStart=' + periodFrom
+                filtros += '&finishPrevisionStart=' + periodFrom
             }
 
             if (periodTo) {
-                filters += '&finishPrevisionEnd=' + periodTo
+                filtros += '&finishPrevisionEnd=' + periodTo
             }
 
-            const result = await executeRequest('task' + filters, 'GET');
+            const result = await executeRequest('task' + filtros, 'GET');
 
             if (result && result.data) {
                 setTasks(result.data);
@@ -50,7 +52,7 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
             e.preventDefault();
 
             if (!name || !finishPrevisionDate) {
-                setMsgError('Please, enter the name and finish date');
+                setMsgErro('Favor preencher o nome e data de previsão');
                 setLoading(false);
                 return;
             }
@@ -63,57 +65,56 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
             await executeRequest('task', 'POST', body);
             await getFilteredList();
             closeModal();
-
         } catch (e: any) {
-            setLoading(false);
-
+            console.log(e);
             if (e?.response?.data?.error) {
-                setMsgError(e?.response?.data?.error);
-                return;
+                setMsgErro(e?.response?.data?.error);
+            } else {
+                setMsgErro('Ocorreu erro ao adicionar tarefa tente novamente!');
             }
-
-            setMsgError('Error, please try again');
         }
-    }
 
-    useEffect(() => {
-        getFilteredList()
-    }, []);
-
-    const exit = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('userName');
-        localStorage.removeItem('userEmail');
-        setAccessToken('');
+        setLoading(false);
     }
 
     const closeModal = () => {
         setName('');
         setFinishPrevisionDate('');
         setLoading(false);
-        setMsgError('');
+        setMsgErro('');
         setShowModal(false);
+    }
+
+    useEffect(() => {
+        getFilteredList();
+    }, [periodFrom, periodTo, status]);
+
+    const sair = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userEmail');
+        setAccessToken('');
     }
 
     return (
         <>
-            <Header exit={exit} setShowModal={setShowModal} />
+            <Header exit={sair} setShowModal={setShowModal} />
             <Filter
                 periodFrom={periodFrom}
                 periodTo={periodTo}
                 status={status}
-                setPeriodFrom={setPeriodFrom}
+                setPeriodFrom={setPeriodoFrom}
                 setPeriodTo={setPeriodTo}
                 setStatus={setStatus}
             />
-            <List tasks={tasks} />
+            <List tasks={tasks} getFilteredList={getFilteredList} />
             <Footer setShowModal={setShowModal} />
             <Modal show={showModal}
                 onHide={() => closeModal()}
                 className="container-modal">
                 <Modal.Body>
                     <p>Adicionar uma tarefa</p>
-                    {msgError && <p className="error">{msgError}</p>}
+                    {msgErro && <p className="error">{msgErro}</p>}
                     <input type="text"
                         placeholder="Nome da tarefa"
                         value={name}
@@ -139,4 +140,4 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
     )
 }
 
-export default Home;
+export { Home }

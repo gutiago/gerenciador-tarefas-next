@@ -4,8 +4,9 @@ import { Task } from '../types/Task';
 
 type ItemProps = {
     task: Task
+    selectTaskToEdit(t: Task): void
 }
-const Item: NextPage<ItemProps> = ({ task }) => {
+const Item: NextPage<ItemProps> = ({ task, selectTaskToEdit }) => {
     const getDateText = (finishDate: Date | undefined, finishPrevisionDate: Date) => {
         if (finishDate) {
             return `Concluído em: ${moment(finishDate).format('DD/MM/yyyy')}`
@@ -13,7 +14,8 @@ const Item: NextPage<ItemProps> = ({ task }) => {
         return `Previsão de conclusão em: ${moment(finishPrevisionDate).format('DD/MM/yyyy')}`;
     }
     return (
-        <div className={"container-item" + (task.finishDate ? " activated" : "")}>
+        <div className={"container-item" + (task.finishDate ? " activated" : "")}
+            onClick={ () => (task.finishDate ? null : selectTaskToEdit(task)) }>
             <img src={task.finishDate ? "/finished.svg" : "/unfinished.svg"} alt={task.finishDate ? "Tarefa concluída" : "Tarefa não concluída"} />
             <div>
                 <p className={task.finishDate ? "finished" : ""}>{task.name}</p>
