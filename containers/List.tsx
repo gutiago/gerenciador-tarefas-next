@@ -38,7 +38,7 @@ const List: NextPage<ListProps> = ({ tasks, getFilteredList }) => {
             }
 
             await executeRequest('tasks?id=' + _id, 'PUT', body);
-            await getFilteredList();
+            getFilteredList();
             closeModal();
         } catch (e: any) {
             console.log(e);

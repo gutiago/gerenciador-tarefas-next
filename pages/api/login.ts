@@ -10,7 +10,7 @@ import jwt from 'jsonwebtoken';
 const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | LoginResponse>) => {
     try {
         if (req.method !== 'POST') {
-            res.status(400).json({ error: 'HTTP method not allowed' });
+            res.status(400).json({ error: 'Método HTTP não permitido' });
             return;
         }
 
@@ -20,10 +20,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponse
             return;
         }
 
-        res.status(400).json({ error: 'Invalid user or password' });
+        res.status(400).json({ error: 'Nome ou senha inválidos' });
     } catch (e) {
         console.log('Authentication failed: ', e);
-        res.status(500).json({ error: 'Authentication failed, try again' });
+        res.status(500).json({ error: 'Falha na autenticação, tente novamente' });
     }
 }
 
@@ -35,7 +35,7 @@ async function hasUser(auth: Login, res: NextApiResponse<DefaultResponseMessage 
     const { MY_SECRET_KEY } = process.env;
 
     if (!MY_SECRET_KEY) {
-        res.status(500).json({ error: 'Internal error' });
+        res.status(500).json({ error: 'Erro ao processar o pedido' });
         return false;
     }
 

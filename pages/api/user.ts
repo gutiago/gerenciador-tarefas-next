@@ -8,7 +8,7 @@ import connectDB from '../../middlewares/connectDB';
 const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>) => {
     try {
         if (req.method !== 'POST') {
-            res.status(400).json({ error: 'HTTP method not allowed' });
+            res.status(400).json({ error: 'Método HTTP não permitido' });
             return;
         }
 
@@ -29,10 +29,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponse
 
         await UserModel.create(final);
 
-        res.status(200).json({ message: 'User created successfully' });
+        res.status(200).json({ message: 'Usuário criado com sucesso' });
     } catch (e) {
         console.log('Error to create user: ', e);
-        res.status(500).json({ error: 'Error to create user' });
+        res.status(500).json({ error: 'Erro ao criar o usuário' });
     }
 }
 
@@ -40,7 +40,7 @@ async function isExistingUser(user: User, res: NextApiResponse<DefaultResponseMe
     const existingUser = await UserModel.find({ email: user.email });
 
     if (existingUser && existingUser.length > 0) {
-        res.status(400).json({ error: 'User already exists' });
+        res.status(400).json({ error: 'Usuário já existe' });
         return true;
     }
 
@@ -49,22 +49,22 @@ async function isExistingUser(user: User, res: NextApiResponse<DefaultResponseMe
 
 function isValidUser(user: User, res: NextApiResponse<DefaultResponseMessage>) {
     if (!user) {
-        res.status(400).json({ error: 'Invalid params' });
+        res.status(400).json({ error: 'Parâmetros inválidos' });
         return false;
     }
 
     if (!isValidName(user.name)) {
-        res.status(400).json({ message: 'Invalid name' });
+        res.status(400).json({ message: 'Nome inválido' });
         return false;
     }
 
     if (!isValidEmail(user.email)) {
-        res.status(400).json({ message: 'Invalid email' });
+        res.status(400).json({ message: 'Email inválido' });
         return false;
     }
 
     if (!isValidPassword(user.password)) {
-        res.status(400).json({ message: 'Invalid password' });
+        res.status(400).json({ message: 'Senha inválida' });
         return false;
     }
 

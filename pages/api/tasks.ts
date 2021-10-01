@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponse
         const failedValidation = await validateUser(userId);
 
         if (failedValidation) {
-            return res.status(400).json({ error: 'Failed to validate user' });
+            return res.status(400).json({ error: 'Falha ao validar usuário' });
         }
 
         if (req.method === 'POST') {
@@ -28,10 +28,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponse
             return await deleteTasks(req, res, userId);
         }
 
-        res.status(400).json({ error: 'HTTP method not allowed' });
+        res.status(400).json({ error: 'Método HTTP não permitido' });
     } catch (e) {
         console.log('Error processing task: ', e);
-        res.status(500).json({ error: 'Error processing task: ' });
+        res.status(500).json({ error: 'Erro ao processar tarefa' });
     }
 }
 
@@ -55,18 +55,18 @@ const deleteTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResp
     const taskFound = await validateIdAndReturnTask(req, userId) as Task;
 
     if (!taskFound) {
-        return res.status(400).json({ error: 'Task not found' });
+        return res.status(400).json({ error: 'Tarefa não encontrada' });
     }
 
     await TaskModel.findByIdAndDelete({ _id: taskFound._id });
-    return res.status(200).json({ error: 'Task deleted successfully' });
+    return res.status(200).json({ error: 'Tarefa deletada com sucesso' });
 }
 
 const updateTask = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) => {
     const taskFound = await validateIdAndReturnTask(req, userId) as Task;
 
     if (!taskFound) {
-        return res.status(400).json({ error: 'Task not found' });
+        return res.status(400).json({ error: 'Tarefa não encontrada' });
     }
 
     if (req.body) {
@@ -85,10 +85,10 @@ const updateTask = async (req: NextApiRequest, res: NextApiResponse<DefaultRespo
         }
 
         await TaskModel.findByIdAndUpdate(taskFound._id, taskFound);
-        return res.status(200).json({ error: 'Task updated successfully' });
+        return res.status(200).json({ error: 'Tarefa atualizada com sucesso' });
     }
 
-    return res.status(400).json({ error: 'Params not found' });
+    return res.status(400).json({ error: 'Parâmetros não encontrados' });
 }
 
 const getTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | Task[]>, userId: string) => {
@@ -136,13 +136,13 @@ const saveTask = async (req: NextApiRequest, res: NextApiResponse<DefaultRespons
         const userFound = await UserModel.findById(userId);
 
         if (!userFound) {
-            return res.status(400).json({ error: 'User not found' });
+            return res.status(400).json({ error: 'Usuário não encontrado' });
         }
 
         const task = req.body as Task;
 
         if (!isValidTask(task, res)) {
-            return res.status(400).json({ error: 'Invalid task' });
+            return res.status(400).json({ error: 'Tarefa inválida' });
         }
 
         const final = {
@@ -152,21 +152,21 @@ const saveTask = async (req: NextApiRequest, res: NextApiResponse<DefaultRespons
         } as Task;
 
         await TaskModel.create(final);
-        return res.status(200).json({ message: 'Task created successfully' });
+        return res.status(200).json({ message: 'Tarefa criada com sucesso' });
     }
 
-    return res.status(400).json({ error: 'Invalid params' });
+    return res.status(400).json({ error: 'Parâmetros inválidos' });
 }
 
 const validateUser = async (userId: string) => {
     if (!userId) {
-        return "User not informed";
+        return "Usuário não informado";
     }
 
     const userFound = await UserModel.findById(userId);
 
     if (!userFound) {
-        return 'User not found';
+        return 'Usuário não encontrado';
     }
 }
 
@@ -178,12 +178,12 @@ function getUserId(req: NextApiRequest) {
 
 function isValidTask(task: Task, res: NextApiResponse<DefaultResponseMessage>) {
     if (!isValidTaskName(task.name)) {
-        res.status(400).json({ error: 'Invalid task name' });
+        res.status(400).json({ error: 'Tarefa com nome inválido' });
         return false;
     }
 
     if (!hasValidPrevisionDate(task.finishPrevisionDate)) {
-        res.status(400).json({ error: 'Invalid prevision date' });
+        res.status(400).json({ error: 'Tarefa com data de previsão inválida' });
         return false;
     }
 
