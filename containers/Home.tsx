@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { TaskModel } from '../models/TaskModel';
 import { executeRequest } from '../services/api';
 import { AccessTokenProps } from '../types/AccessTokenProps';
 import { Task } from '../types/Task';
@@ -36,7 +35,7 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
                 filtros += '&finishPrevisionEnd=' + periodTo
             }
 
-            const result = await executeRequest('task' + filtros, 'GET');
+            const result = await executeRequest('tasks' + filtros, 'GET');
 
             if (result && result.data) {
                 setTasks(result.data);
@@ -62,7 +61,7 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
                 finishPrevisionDate
             }
 
-            await executeRequest('task', 'POST', body);
+            await executeRequest('tasks', 'POST', body);
             await getFilteredList();
             closeModal();
         } catch (e: any) {
@@ -140,4 +139,4 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
     )
 }
 
-export { Home }
+export default Home;

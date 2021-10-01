@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { AccessTokenProps } from '../types/AccessTokenProps';
 
 type HeaderProps = {
   exit(): void

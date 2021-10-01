@@ -37,7 +37,7 @@ const List: NextPage<ListProps> = ({ tasks, getFilteredList }) => {
                 finishDate
             }
 
-            await executeRequest('task?id=' + _id, 'PUT', body);
+            await executeRequest('tasks?id=' + _id, 'PUT', body);
             await getFilteredList();
             closeModal();
         } catch (e: any) {
@@ -63,7 +63,7 @@ const List: NextPage<ListProps> = ({ tasks, getFilteredList }) => {
                 return;
             }
 
-            await executeRequest('task?id=' + _id, 'DELETE');
+            await executeRequest('tasks?id=' + _id, 'DELETE');
             await getFilteredList();
             closeModal();
         } catch (e: any) {
@@ -99,7 +99,7 @@ const List: NextPage<ListProps> = ({ tasks, getFilteredList }) => {
 
     return (
         <>
-            <div className={"container-listagem" + (tasks && tasks.length === 0 ? " vazia" : "")}>
+            <div className={"container-list" + (tasks && tasks.length === 0 ? " empty" : "")}>
 
                 {
                     tasks && tasks.length > 0 ?

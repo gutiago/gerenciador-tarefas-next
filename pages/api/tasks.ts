@@ -142,7 +142,7 @@ const saveTask = async (req: NextApiRequest, res: NextApiResponse<DefaultRespons
         const task = req.body as Task;
 
         if (!isValidTask(task, res)) {
-            return;
+            return res.status(400).json({ error: 'Invalid task' });
         }
 
         const final = {
