@@ -1,6 +1,6 @@
 @import './config.scss';
 
-.container-item {
+.container-item{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -8,9 +8,9 @@
     width: 95%;
     background-color: $lightGreyColor;
     border-radius: 12px;
-    padding-bottom: 20px;
+    padding: 10px;
     margin-top: 10px;
-    height: 55px;
+    height: 60px;
 
     img {
         width: 18px;

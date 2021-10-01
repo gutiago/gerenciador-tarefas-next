@@ -1,9 +1,13 @@
 import type { NextPage } from 'next'
 import { useState } from 'react';
 import { executeRequest } from '../services/api';
-import { AccessTokenProps } from '../types/AccessTokenProps';
 
-const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
+type LoginProps = {
+  setLoginView(b: boolean): void,
+  setAccessToken(e: string) : void
+}
+
+const Login: NextPage<LoginProps> = ({ setLoginView, setAccessToken }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [msgErro, setMsgError] = useState('');
@@ -15,7 +19,7 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
       e.preventDefault();
 
       if (!login || !password) {
-        setMsgError('Invalid params');
+        setMsgError('Parâmetros inválidos');
         setLoading(false);
         return;
       }
@@ -35,7 +39,7 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
         localStorage.setItem('userEmail', result.data.email);
         setAccessToken(result.data.token);
       } else {
-        setMsgError('Error parsing data, please try again');
+        setMsgError('Erro ao fazer o parse dos dados, tente novamente.');
       }
 
       setLoading(false);
@@ -47,7 +51,7 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
         return;
       }
 
-      setMsgError('Error, please try again');
+      setMsgError('Erro, tente novamente.');
     }
   }
 
@@ -57,14 +61,15 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
       <form>
         {msgErro && <p>{msgErro}</p>}
         <div className="input">
-          <img src="/mail.svg" alt="Logo Fiap" />
+          <img src="/mail.svg" alt="Email" />
           <input type="text" placeholder="Informe seu email" value={login} onChange={e => setLogin(e.target.value)} />
         </div>
         <div className="input">
-          <img src="/lock.svg" alt="Logo Fiap" />
+          <img src="/lock.svg" alt="Cadeado" />
           <input type="password" placeholder="Informe sua senha" value={password} onChange={e => setPassword(e.target.value)} />
         </div>
         <button type="button" className={isLoading ? "disabled" : "button"} onClick={doLogin} disabled={isLoading}>{isLoading ? "Carregando" : "Login"}</button>
+        <span onClick={ e => setLoginView(false) }>Criar conta</span>
       </form>
     </div>
   )

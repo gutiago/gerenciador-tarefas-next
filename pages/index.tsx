@@ -2,9 +2,11 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import Home from '../containers/Home';
 import Login from '../containers/Login'
+import CreateAccount from '../containers/CreateAccount';
 
 const Index: NextPage = () => {
   const [accessToken, setAccessToken] = useState('');
+  const [isLoginView, setLoginView] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -17,7 +19,8 @@ const Index: NextPage = () => {
   })
 
   return (
-    !accessToken ? <Login setAccessToken={setAccessToken} /> : <Home setAccessToken={setAccessToken}/>
+    !accessToken ? (isLoginView ? <Login setAccessToken={setAccessToken} setLoginView={setLoginView} /> : <CreateAccount setAccessToken={setAccessToken} setLoginView={setLoginView} /> ): 
+    <Home setAccessToken={setAccessToken}/>
   )
 }
 

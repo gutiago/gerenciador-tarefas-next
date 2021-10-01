@@ -1,15 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { LoginResponse } from '../../types/LoginResponse';
 import { DefaultResponseMessage } from '../../types/DefaultResponseMessage';
 import { User } from '../../types/User';
 import { UserModel } from '../../models/UserModel';
 import md5 from 'md5';
 import connectDB from '../../middlewares/connectDB';
+import jwt from 'jsonwebtoken';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | LoginResponse>) => {
     try {
         if (req.method !== 'POST') {
             res.status(400).json({ error: 'Método HTTP não permitido' });
             return;
+        }
+        const { MY_SECRET_KEY } = process.env;
+
+        if (!MY_SECRET_KEY) {
+            res.status(500).json({ error: 'Erro ao processar o pedido' });
+            return false;
         }
 
         const user = req.body as User;
@@ -27,9 +35,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponse
             password: md5(user.password)
         }
 
-        await UserModel.create(final);
+        const createdUser = await UserModel.create(final) as User;
 
-        res.status(200).json({ message: 'Usuário criado com sucesso' });
+        const token = jwt.sign({ _id: createdUser._id }, MY_SECRET_KEY)
+
+        res.status(200).json(
+            {
+                name: createdUser.name,
+                email: createdUser.email,
+                token,
+            }
+        );
     } catch (e) {
         console.log('Error to create user: ', e);
         res.status(500).json({ error: 'Erro ao criar o usuário' });
