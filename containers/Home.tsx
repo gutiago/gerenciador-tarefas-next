@@ -21,12 +21,12 @@ const Home: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
     }
 
     return (
-        <div>
+        <>
             <Header exit={ exit }/>
             <Filter />
             <List tasks={tasks}/>
             <Footer/>
-        </div>
+        </>
     )
 }
 

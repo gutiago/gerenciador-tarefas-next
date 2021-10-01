@@ -1,6 +1,6 @@
 @import './config.scss';
 
-.container-filtros {
+.container-filters {
     margin-top: 16px;
     display: flex;
     flex-direction: column;
@@ -77,6 +77,10 @@
 
                 input, select {
                     border-color: $primaryColor;
+                }
+
+                input[type="date"]::-webkit-calendar-picker-indicator {
+                    display: none;
                 }
 
                 .line {

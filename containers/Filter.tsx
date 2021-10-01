@@ -4,7 +4,7 @@ import { useState } from 'react';
 const Filter: NextPage = () => {
     const [showFilters, setShowFilter] = useState(false);
     return (
-        <div className="container-filtros">
+        <div className="container-filters">
             <div className="title">
                 <span>Tarefas</span>
                 <img src="/filter.svg" alt="Filter tasks" onClick={ e => setShowFilter(!showFilters) }/>
