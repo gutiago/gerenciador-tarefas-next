@@ -7,7 +7,7 @@ import connectDB from '../../middlewares/connectDB';
 import md5 from 'md5';
 import jwt from 'jsonwebtoken';
 
-const handler = async (req : NextApiRequest, res : NextApiResponse<DefaultResponseMessage | LoginResponse>) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | LoginResponse>) => {
     try {
         if (req.method !== 'POST') {
             res.status(400).json({ error: 'HTTP method not allowed' });
@@ -32,7 +32,7 @@ export default connectDB(handler);
 async function hasUser(auth: Login, res: NextApiResponse<DefaultResponseMessage | LoginResponse>) {
     const usersFound = await UserModel.find({ email: auth.login, password: md5(auth.password) })
 
-    const {MY_SECRET_KEY} = process.env;
+    const { MY_SECRET_KEY } = process.env;
 
     if (!MY_SECRET_KEY) {
         res.status(500).json({ error: 'Internal error' });
@@ -41,7 +41,7 @@ async function hasUser(auth: Login, res: NextApiResponse<DefaultResponseMessage 
 
     if (usersFound && usersFound[0]) {
         const user = usersFound[0];
-        const token = jwt.sign({_id: user._id}, MY_SECRET_KEY)
+        const token = jwt.sign({ _id: user._id }, MY_SECRET_KEY)
 
         res.status(200).json(
             {

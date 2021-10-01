@@ -4,8 +4,8 @@ import { User } from '../../types/User';
 import { UserModel } from '../../models/UserModel';
 import md5 from 'md5';
 import connectDB from '../../middlewares/connectDB';
- 
-const handler = async (req : NextApiRequest, res : NextApiResponse<DefaultResponseMessage>) => {
+
+const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>) => {
     try {
         if (req.method !== 'POST') {
             res.status(400).json({ error: 'HTTP method not allowed' });
@@ -37,7 +37,7 @@ const handler = async (req : NextApiRequest, res : NextApiResponse<DefaultRespon
 }
 
 async function isExistingUser(user: User, res: NextApiResponse<DefaultResponseMessage>) {
-    const existingUser = await UserModel.find({ email : user.email });
+    const existingUser = await UserModel.find({ email: user.email });
 
     if (existingUser && existingUser.length > 0) {
         res.status(400).json({ error: 'User already exists' });

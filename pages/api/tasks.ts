@@ -6,9 +6,10 @@ import { Task } from '../../types/Task';
 import { TaskModel } from '../../models/TaskModel';
 import { UserModel } from '../../models/UserModel';
 import { GetTasksQueryParams } from '../../types/GetTasksQueryParams';
+import moment from 'moment';
 
-const handler = async(req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | Task[]>) =>{
-    try{
+const handler = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | Task[]>) => {
+    try {
 
         const userId = getUserId(req);
         const failedValidation = await validateUser(userId);
@@ -17,18 +18,18 @@ const handler = async(req: NextApiRequest, res: NextApiResponse<DefaultResponseM
             return res.status(400).json({ error: 'Failed to validate user' });
         }
 
-        if(req.method === 'POST'){
+        if (req.method === 'POST') {
             return await saveTask(req, res, userId);
-        }else if(req.method === 'GET'){
+        } else if (req.method === 'GET') {
             return await getTasks(req, res, userId);
-        }else if(req.method === 'PUT'){
+        } else if (req.method === 'PUT') {
             return await updateTask(req, res, userId);
-        }else if(req.method === 'DELETE'){
+        } else if (req.method === 'DELETE') {
             return await deleteTasks(req, res, userId);
         }
 
         res.status(400).json({ error: 'HTTP method not allowed' });
-    }catch(e){
+    } catch (e) {
         console.log('Error processing task: ', e);
         res.status(500).json({ error: 'Error processing task: ' });
     }
@@ -50,7 +51,7 @@ const validateIdAndReturnTask = async (req: NextApiRequest, userId: string) => {
     return taskFound;
 }
 
-const deleteTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) =>{
+const deleteTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) => {
     const taskFound = await validateIdAndReturnTask(req, userId) as Task;
 
     if (!taskFound) {
@@ -61,7 +62,7 @@ const deleteTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResp
     return res.status(200).json({ error: 'Task deleted successfully' });
 }
 
-const updateTask = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) =>{
+const updateTask = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) => {
     const taskFound = await validateIdAndReturnTask(req, userId) as Task;
 
     if (!taskFound) {
@@ -86,14 +87,14 @@ const updateTask = async (req: NextApiRequest, res: NextApiResponse<DefaultRespo
         await TaskModel.findByIdAndUpdate(taskFound._id, taskFound);
         return res.status(200).json({ error: 'Task updated successfully' });
     }
-    
+
     return res.status(400).json({ error: 'Params not found' });
 }
 
-const getTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | Task[]>, userId: string) =>{
-    
+const getTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage | Task[]>, userId: string) => {
+
     const params = req.query as GetTasksQueryParams;
-    
+
     const query = {
         userId
     } as any;
@@ -114,14 +115,14 @@ const getTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultRespons
     if (params?.status) {
         const status = parseInt(params?.status);
 
-        switch(status) {
-            case 1:     
+        switch (status) {
+            case 1:
                 query.finishDate = null;
                 break;
-            case 2: 
+            case 2:
                 query.finishDate = { $ne: null };
                 break;
-            default: 
+            default:
                 break;
         }
     }
@@ -130,11 +131,11 @@ const getTasks = async (req: NextApiRequest, res: NextApiResponse<DefaultRespons
     return res.status(200).json(result);
 }
 
-const saveTask = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) =>{
-    if(req.body){
+const saveTask = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMessage>, userId: string) => {
+    if (req.body) {
         const userFound = await UserModel.findById(userId);
 
-        if(!userFound){
+        if (!userFound) {
             return res.status(400).json({ error: 'User not found' });
         }
 
@@ -147,14 +148,14 @@ const saveTask = async (req: NextApiRequest, res: NextApiResponse<DefaultRespons
         const final = {
             ...task,
             userId,
-            finishDate : undefined
+            finishDate: undefined
         } as Task;
 
         await TaskModel.create(final);
-        return res.status(200).json({ message: 'Task created successfully'});
+        return res.status(200).json({ message: 'Task created successfully' });
     }
 
-    return res.status(400).json({ error: 'Invalid params'});
+    return res.status(400).json({ error: 'Invalid params' });
 }
 
 const validateUser = async (userId: string) => {
@@ -177,12 +178,12 @@ function getUserId(req: NextApiRequest) {
 
 function isValidTask(task: Task, res: NextApiResponse<DefaultResponseMessage>) {
     if (!isValidTaskName(task.name)) {
-        res.status(400).json({ error: 'Invalid task name'});
+        res.status(400).json({ error: 'Invalid task name' });
         return false;
     }
 
     if (!hasValidPrevisionDate(task.finishPrevisionDate)) {
-        res.status(400).json({ error: 'Invalid prevision date'});
+        res.status(400).json({ error: 'Invalid prevision date' });
         return false;
     }
 
@@ -194,5 +195,5 @@ function isValidTaskName(name: string) {
 }
 
 function hasValidPrevisionDate(date: Date) {
-    return date && new Date(date).getDate() < new Date().getDate();
+    return date && !moment(date).isBefore(new Date());
 }

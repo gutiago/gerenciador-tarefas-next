@@ -79,10 +79,6 @@
                     border-color: $primaryColor;
                 }
 
-                input[type="date"]::-webkit-calendar-picker-indicator {
-                    display: none;
-                }
-
                 .line {
                     border-color: $primaryColor;
                     border-width: 1px;

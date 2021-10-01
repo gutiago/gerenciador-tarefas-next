@@ -13,11 +13,11 @@ const Item: NextPage<ItemProps> = ({ task }) => {
         return `Previsão de conclusão em: ${moment(finishPrevisionDate).format('DD/MM/yyyy')}`;
     }
     return (
-        <div className={ "container-item" + (task.finishDate ? " activated" : "")}>
-            <img src={task.finishDate ? "/finished.svg" : "/unfinished.svg"} alt={task.finishDate ? "Tarefa concluída" : "Tarefa não concluída"}/>
+        <div className={"container-item" + (task.finishDate ? " activated" : "")}>
+            <img src={task.finishDate ? "/finished.svg" : "/unfinished.svg"} alt={task.finishDate ? "Tarefa concluída" : "Tarefa não concluída"} />
             <div>
                 <p className={task.finishDate ? "finished" : ""}>{task.name}</p>
-                <span>{ getDateText(task.finishDate, task.finishPrevisionDate) }</span>
+                <span>{getDateText(task.finishDate, task.finishPrevisionDate)}</span>
             </div>
         </div>
     )

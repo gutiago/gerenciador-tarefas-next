@@ -9,7 +9,7 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
   const [msgErro, setMsgError] = useState('');
   const [isLoading, setLoading] = useState(false);
 
-  const doLogin = async(e: any) => {
+  const doLogin = async (e: any) => {
     try {
       setLoading(true);
       e.preventDefault();
@@ -38,7 +38,7 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
         setMsgError('Error parsing data, please try again');
       }
 
-      setLoading(false);      
+      setLoading(false);
     } catch (e: any) {
       setLoading(false);
 
@@ -53,18 +53,18 @@ const Login: NextPage<AccessTokenProps> = ({ setAccessToken }) => {
 
   return (
     <div className="container-login">
-      <img src="/logo.svg" alt="Logo Fiap" className="logo"/>
+      <img src="/logo.svg" alt="Logo Fiap" className="logo" />
       <form>
         {msgErro && <p>{msgErro}</p>}
         <div className="input">
-          <img src="/mail.svg" alt="Logo Fiap"/>
-          <input type="text" placeholder="Informe seu email" value={ login } onChange={ e => setLogin(e.target.value) }/>
+          <img src="/mail.svg" alt="Logo Fiap" />
+          <input type="text" placeholder="Informe seu email" value={login} onChange={e => setLogin(e.target.value)} />
         </div>
         <div className="input">
-          <img src="/lock.svg" alt="Logo Fiap"/>
-          <input type="password" placeholder="Informe sua senha" value={ password } onChange={ e => setPassword(e.target.value) }/>
+          <img src="/lock.svg" alt="Logo Fiap" />
+          <input type="password" placeholder="Informe sua senha" value={password} onChange={e => setPassword(e.target.value)} />
         </div>
-        <button type="button" className={ isLoading ? "disabled" : "button" } onClick={doLogin} disabled={isLoading}>{isLoading ? "Carregando" : "Login"}</button>
+        <button type="button" className={isLoading ? "disabled" : "button"} onClick={doLogin} disabled={isLoading}>{isLoading ? "Carregando" : "Login"}</button>
       </form>
     </div>
   )

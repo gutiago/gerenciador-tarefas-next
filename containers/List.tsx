@@ -11,13 +11,13 @@ const List: NextPage<ListProps> = ({ tasks }) => {
     return (
         <div className={"container-list" + (tasks && tasks.length === 0 ? " empty" : "")}>
             {
-                tasks && tasks.length > 0 ? 
-                tasks.map(t => <Item task={t}/>)
-                : 
-                <>
-                    <img src="/empty-list.svg" alt="List" onClick={ e => setShowFilter(!showFilters) }/>
-                    <p>Você ainda não possui tarefas cadastradas!</p>
-                </>
+                tasks && tasks.length > 0 ?
+                    tasks.map(t => <Item task={t} key={t._id} />)
+                    :
+                    <>
+                        <img src="/empty-list.svg" alt="List" onClick={e => setShowFilter(!showFilters)} />
+                        <p>Você ainda não possui tarefas cadastradas!</p>
+                    </>
             }
         </div>
     )
