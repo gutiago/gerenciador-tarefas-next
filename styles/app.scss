@@ -1,4 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
+@import './config.scss';
 
 @font-face {
     font-family: 'Biennale Regular';
@@ -32,3 +33,57 @@ body {
 @import './config.scss';
 @import './login.scss';
 @import './header.scss';
+@import './filter.scss';
+@import './list.scss';
+@import './item.scss';
+@import './footer.scss';
+
+input, select {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    color: $primaryColor;
+    min-width: 180px;
+    background-color: transparent;
+    font-family: 'Biennale Regular';
+
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0.01em;
+    border-color: $mediumGreyColor;
+
+    outline: none;
+
+    cursor: pointer;
+
+    &:focus {
+        border-color: $primaryColor;
+    }
+
+    &::placeholder {
+        color: $mediumGreyColor;
+        opacity: 1;
+    }
+
+    &:-ms-input-placeholder {
+        color: $mediumGreyColor;
+    }
+
+    &::-ms-input-placeholder {
+        color: $mediumGreyColor;
+    }
+}
+
+@media screen and (min-width: 1024px) { 
+    input, select {
+        border-top-width: 0.01em;
+        border-left-width: 0.01em;
+        border-right-width: 0.01em;
+        border-bottom-width: 0.01em;
+        border-radius: 8px;
+        padding: 5px;
+        outline: none;
+    }
+}
